@@ -65,7 +65,7 @@ class blockchain(object):
         """
 
         # Must make sure the dictionary is ordered or else there will be inconsistent hashes
-        block_string = json.dump(block, sort_keys=True).encode()
+        block_string = json.dumps(block, sort_keys=True).encode()
         return hashlib.sha256(block_string).hexdigest()
 
     def proof_of_work(self, last_proof):
@@ -117,7 +117,7 @@ def mine():
     last_block = blockchain.last_block
     last_proof = last_block['proof']
     proof = blockchain.proof_of_work(last_proof)
-    coin.blockchain.new_transaction(sender="0", recipient=node_identifier,amount=1,)
+    blockchain.new_transaction(sender="0", recipient=node_identifier,amount=1,)
 
     # Forge the new Block by adding it to the chain
     previous_hash = blockchain.hash(last_block)
@@ -132,7 +132,7 @@ def mine():
     }
     return jsonify(response), 200
 
-@app.route('/transactions/new', method=['POST'])
+@app.route('/transactions/new', methods=['POST'])
 def new_transaction():
     values = request.get_json()
     if not validateTransaction(values):
